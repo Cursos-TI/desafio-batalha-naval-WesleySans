@@ -2,19 +2,8 @@
 
 int main() {
 
-    // Matriz do tabuleiro 10x10
+    // Tabuleiro 10x10
     int tabuleiro[10][10];
-
-    // Vetores dos navios
-    int navioHorizontal[3] = {3, 3, 3};
-    int navioVertical[3] = {3, 3, 3};
-
-    // Coordenadas iniciais
-    int linhaHorizontal = 2;
-    int colunaHorizontal = 1;
-
-    int linhaVertical = 5;
-    int colunaVertical = 7;
 
     int i, j;
 
@@ -25,33 +14,68 @@ int main() {
         }
     }
 
-    // Validação do navio horizontal
-    if(colunaHorizontal + 3 <= 10) {
+    // NAVIO HORIZONTAL
+
+    int linhaH = 1;
+    int colunaH = 2;
+
+    if(colunaH + 3 <= 10) {
 
         for(i = 0; i < 3; i++) {
 
-            // Verifica sobreposição
-            if(tabuleiro[linhaHorizontal][colunaHorizontal + i] == 0) {
-                tabuleiro[linhaHorizontal][colunaHorizontal + i] =
-                navioHorizontal[i];
+            if(tabuleiro[linhaH][colunaH + i] == 0) {
+                tabuleiro[linhaH][colunaH + i] = 3;
             }
         }
     }
 
-    // Validação do navio vertical
-    if(linhaVertical + 3 <= 10) {
+    // NAVIO VERTICAL
+
+    int linhaV = 5;
+    int colunaV = 7;
+
+    if(linhaV + 3 <= 10) {
 
         for(i = 0; i < 3; i++) {
 
-            // Verifica sobreposição
-            if(tabuleiro[linhaVertical + i][colunaVertical] == 0) {
-                tabuleiro[linhaVertical + i][colunaVertical] =
-                navioVertical[i];
+            if(tabuleiro[linhaV + i][colunaV] == 0) {
+                tabuleiro[linhaV + i][colunaV] = 3;
             }
         }
     }
 
-    // Exibe o tabuleiro
+    // NAVIO DIAGONAL PRINCIPAL
+
+    int linhaDP = 0;
+    int colunaDP = 0;
+
+    if(linhaDP + 3 <= 10 && colunaDP + 3 <= 10) {
+
+        for(i = 0; i < 3; i++) {
+
+            if(tabuleiro[linhaDP + i][colunaDP + i] == 0) {
+                tabuleiro[linhaDP + i][colunaDP + i] = 3;
+            }
+        }
+    }
+
+    // NAVIO DIAGONAL SECUNDÁRIA
+
+    int linhaDS = 2;
+    int colunaDS = 9;
+
+    if(linhaDS + 3 <= 10 && colunaDS - 2 >= 0) {
+
+        for(i = 0; i < 3; i++) {
+
+            if(tabuleiro[linhaDS + i][colunaDS - i] == 0) {
+                tabuleiro[linhaDS + i][colunaDS - i] = 3;
+            }
+        }
+    }
+
+    // EXIBE O TABULEIRO
+
     printf("TABULEIRO BATALHA NAVAL\n\n");
 
     for(i = 0; i < 10; i++) {
