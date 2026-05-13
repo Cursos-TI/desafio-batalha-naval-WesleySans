@@ -2,12 +2,15 @@
 
 int main() {
 
-    // Declaração do tabuleiro 10x10
     int tabuleiro[10][10];
+
+    int cone[5][5];
+    int cruz[5][5];
+    int octaedro[5][5];
 
     int i, j;
 
-    // Inicializa todas as posições com 0 (água)
+    // Inicializa tabuleiro com água
     for(i = 0; i < 10; i++) {
 
         for(j = 0; j < 10; j++) {
@@ -15,85 +18,158 @@ int main() {
         }
     }
 
-    // NAVIO HORIZONTAL
+    // NAVIOS
 
-    int linhaHorizontal = 1;
-    int colunaHorizontal = 2;
+    // Navio horizontal
+    for(i = 0; i < 3; i++) {
+        tabuleiro[1][2 + i] = 3;
+    }
 
-    // Verifica se cabe no tabuleiro
-    if(colunaHorizontal + 3 <= 10) {
+    // Navio vertical
+    for(i = 0; i < 3; i++) {
+        tabuleiro[5 + i][7] = 3;
+    }
 
-        for(i = 0; i < 3; i++) {
+    // Navio diagonal principal
+    for(i = 0; i < 3; i++) {
+        tabuleiro[2 + i][2 + i] = 3;
+    }
 
-            // Verifica sobreposição
-            if(tabuleiro[linhaHorizontal][colunaHorizontal + i] == 0) {
+    // Navio diagonal secundária
+    for(i = 0; i < 3; i++) {
+        tabuleiro[2 + i][8 - i] = 3;
+    }
 
-                tabuleiro[linhaHorizontal][colunaHorizontal + i] = 3;
+    // HABILIDADE CONE
+
+    for(i = 0; i < 5; i++) {
+
+        for(j = 0; j < 5; j++) {
+
+            if(j >= 2 - i && j <= 2 + i) {
+                cone[i][j] = 1;
+            }
+            else {
+                cone[i][j] = 0;
             }
         }
     }
 
-    // NAVIO VERTICAL
+    // HABILIDADE CRUZ
 
-    int linhaVertical = 5;
-    int colunaVertical = 7;
+    for(i = 0; i < 5; i++) {
 
-    // Verifica se cabe no tabuleiro
-    if(linhaVertical + 3 <= 10) {
+        for(j = 0; j < 5; j++) {
 
-        for(i = 0; i < 3; i++) {
-
-            // Verifica sobreposição
-            if(tabuleiro[linhaVertical + i][colunaVertical] == 0) {
-
-                tabuleiro[linhaVertical + i][colunaVertical] = 3;
+            if(i == 2 || j == 2) {
+                cruz[i][j] = 1;
+            }
+            else {
+                cruz[i][j] = 0;
             }
         }
     }
 
-    // NAVIO DIAGONAL PRINCIPAL
+    // HABILIDADE OCTAEDRO
 
-    int linhaDiagonal1 = 0;
-    int colunaDiagonal1 = 0;
+    for(i = 0; i < 5; i++) {
 
-    // Verifica limites do tabuleiro
-    if(linhaDiagonal1 + 3 <= 10 &&
-       colunaDiagonal1 + 3 <= 10) {
+        for(j = 0; j < 5; j++) {
 
-        for(i = 0; i < 3; i++) {
+            if((i + j >= 2) &&
+               (i + j <= 6) &&
+               (i - j <= 2) &&
+               (j - i <= 2)) {
 
-            // Verifica sobreposição
-            if(tabuleiro[linhaDiagonal1 + i]
-                         [colunaDiagonal1 + i] == 0) {
-
-                tabuleiro[linhaDiagonal1 + i]
-                          [colunaDiagonal1 + i] = 3;
+                octaedro[i][j] = 1;
+            }
+            else {
+                octaedro[i][j] = 0;
             }
         }
     }
 
-    // NAVIO DIAGONAL SECUNDÁRIA
+    // POSIÇÕES DAS HABILIDADES
 
-    int linhaDiagonal2 = 2;
-    int colunaDiagonal2 = 9;
+    int origemConeLinha = 1;
+    int origemConeColuna = 5;
 
-    // Verifica limites do tabuleiro
-    if(linhaDiagonal2 + 3 <= 10 &&
-       colunaDiagonal2 - 2 >= 0) {
+    int origemCruzLinha = 6;
+    int origemCruzColuna = 2;
 
-        for(i = 0; i < 3; i++) {
+    int origemOctaedroLinha = 7;
+    int origemOctaedroColuna = 7;
 
-            // Verifica sobreposição
-            if(tabuleiro[linhaDiagonal2 + i]
-                         [colunaDiagonal2 - i] == 0) {
+    // APLICA CONE NO TABULEIRO
 
-                tabuleiro[linhaDiagonal2 + i]
-                          [colunaDiagonal2 - i] = 3;
+    for(i = 0; i < 5; i++) {
+
+        for(j = 0; j < 5; j++) {
+
+            int linhaTabuleiro = origemConeLinha + i;
+            int colunaTabuleiro = origemConeColuna + j - 2;
+
+            if(linhaTabuleiro >= 0 &&
+               linhaTabuleiro < 10 &&
+               colunaTabuleiro >= 0 &&
+               colunaTabuleiro < 10) {
+
+                if(cone[i][j] == 1 &&
+                   tabuleiro[linhaTabuleiro][colunaTabuleiro] == 0) {
+
+                    tabuleiro[linhaTabuleiro][colunaTabuleiro] = 5;
+                }
             }
         }
     }
 
-    // EXIBE O TABULEIRO
+    // APLICA CRUZ NO TABULEIRO
+
+    for(i = 0; i < 5; i++) {
+
+        for(j = 0; j < 5; j++) {
+
+            int linhaTabuleiro = origemCruzLinha + i - 2;
+            int colunaTabuleiro = origemCruzColuna + j - 2;
+
+            if(linhaTabuleiro >= 0 &&
+               linhaTabuleiro < 10 &&
+               colunaTabuleiro >= 0 &&
+               colunaTabuleiro < 10) {
+
+                if(cruz[i][j] == 1 &&
+                   tabuleiro[linhaTabuleiro][colunaTabuleiro] == 0) {
+
+                    tabuleiro[linhaTabuleiro][colunaTabuleiro] = 5;
+                }
+            }
+        }
+    }
+
+    // APLICA OCTAEDRO NO TABULEIRO
+
+    for(i = 0; i < 5; i++) {
+
+        for(j = 0; j < 5; j++) {
+
+            int linhaTabuleiro = origemOctaedroLinha + i - 2;
+            int colunaTabuleiro = origemOctaedroColuna + j - 2;
+
+            if(linhaTabuleiro >= 0 &&
+               linhaTabuleiro < 10 &&
+               colunaTabuleiro >= 0 &&
+               colunaTabuleiro < 10) {
+
+                if(octaedro[i][j] == 1 &&
+                   tabuleiro[linhaTabuleiro][colunaTabuleiro] == 0) {
+
+                    tabuleiro[linhaTabuleiro][colunaTabuleiro] = 5;
+                }
+            }
+        }
+    }
+
+    // EXIBE TABULEIRO
 
     printf("TABULEIRO BATALHA NAVAL\n\n");
 
@@ -101,7 +177,15 @@ int main() {
 
         for(j = 0; j < 10; j++) {
 
-            printf("%d ", tabuleiro[i][j]);
+            if(tabuleiro[i][j] == 0) {
+                printf("0 ");
+            }
+            else if(tabuleiro[i][j] == 3) {
+                printf("3 ");
+            }
+            else if(tabuleiro[i][j] == 5) {
+                printf("5 ");
+            }
         }
 
         printf("\n");
